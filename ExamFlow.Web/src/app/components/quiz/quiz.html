@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-gray-100 py-8 px-4 font-sarabun">
+  <div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+      <div class="bg-green-500 px-6 py-4 flex items-center justify-between">
+        <h1 class="text-white text-lg font-semibold">ทำข้อสอบ</h1>
+        @if (!isLoading() && questions().length > 0) {
+          <span class="text-green-100 text-sm">
+            ตอบแล้ว {{ answeredCount() }}/{{ questions().length }} ข้อ
+          </span>
+        }
+      </div>
+
+      @if (!isLoading() && questions().length > 0) {
+        <div class="h-1.5 bg-gray-100">
+          <div
+            class="h-full bg-green-400 transition-all duration-300"
+            [style.width.%]="(answeredCount() / questions().length) * 100"
+          ></div>
+        </div>
+      }
+
+      <div class="p-6">
+
+        @if (errorMessage()) {
+          <div class="mb-4 bg-red-50 border border-red-200 text-red-600 rounded-lg px-4 py-3 text-sm">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        @if (isLoading()) {
+          <div class="space-y-6">
+            @for (i of [1,2,3]; track i) {
+              <div class="animate-pulse">
+                <div class="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                <div class="space-y-2">
+                  @for (j of [1,2,3,4]; track j) {
+                    <div class="h-10 bg-gray-100 rounded-lg"></div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        @if (!isLoading() && questions().length === 0) {
+          <div class="text-center py-16">
+            <div class="text-6xl mb-4">📭</div>
+            <p class="text-gray-400">ยังไม่มีข้อสอบในระบบ</p>
+          </div>
+        }
+
+        @if (!isLoading() && questions().length > 0) {
+          <div class="space-y-8">
+
+            @for (q of questions(); track q.id) {
+              <div class="border border-gray-100 rounded-xl p-5">
+
+                <p class="font-semibold text-gray-800 mb-4 flex gap-2">
+                  <span class="inline-flex items-center justify-center w-7 h-7 bg-green-500
+                               text-white text-xs font-bold rounded-full shrink-0 mt-0.5">
+                    {{ q.questionNumber }}
+                  </span>
+                  {{ q.questionText }}
+                </p>
+
+                <div class="space-y-2">
+                  @for (choice of choices(q); track choice.value) {
+                    <button
+                      type="button"
+                      (click)="selectAnswer(q.id, choice.value)"
+                      class="w-full flex items-center gap-3 px-4 py-3 rounded-lg border-2
+                             text-left text-sm transition-all duration-150"
+                      [class.border-green-400]="isSelected(q.id, choice.value)"
+                      [class.bg-green-50]="isSelected(q.id, choice.value)"
+                      [class.text-green-700]="isSelected(q.id, choice.value)"
+                      [class.font-medium]="isSelected(q.id, choice.value)"
+                      [class.border-gray-200]="!isSelected(q.id, choice.value)"
+                      [class.hover:border-gray-300]="!isSelected(q.id, choice.value)"
+                      [class.text-gray-600]="!isSelected(q.id, choice.value)"
+                    >
+                      <span
+                        class="w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center"
+                        [class.border-green-500]="isSelected(q.id, choice.value)"
+                        [class.border-gray-300]="!isSelected(q.id, choice.value)"
+                      >
+                        @if (isSelected(q.id, choice.value)) {
+                          <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                        }
+                      </span>
+                      {{ choice.label }}
+                    </button>
+                  }
+                </div>
+
+              </div>
+            }
+
+            <div class="flex gap-3 pt-2">
+              <button
+                type="button"
+                (click)="goBack()"
+                class="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-500
+                       hover:border-gray-300 text-sm font-medium transition-all duration-150"
+              >
+                ← กลับ
+              </button>
+              <button
+                type="button"
+                (click)="submit()"
+                class="flex-[2] py-3 rounded-xl bg-green-500 hover:bg-green-600 active:scale-[0.98]
+                       text-white text-sm font-semibold transition-all duration-150 shadow-sm"
+              >
+                ส่งคำตอบ →
+              </button>
+            </div>
+
+          </div>
+        }
+
+      </div>
+    </div>
+
+  </div>
+</div>

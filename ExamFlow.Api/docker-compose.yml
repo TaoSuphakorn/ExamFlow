@@ -1,0 +1,76 @@
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: examflow_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       examflow
+      POSTGRES_USER:     examuser
+      POSTGRES_PASSWORD: exampass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U examuser -d examflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - examflow_net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: examflow_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    admin@examflow.com
+      PGADMIN_DEFAULT_PASSWORD: admin1234
+    ports:
+      - "5050:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - examflow_net
+
+  api:
+    build:
+      context: ..
+      dockerfile: ExamFlow.Api/Dockerfile
+    container_name: examflow_api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS:        http://+:8080
+      ConnectionStrings__DefaultConnection: >-
+        Host=db;Port=5432;Database=examflow;
+        Username=examuser;Password=exampass123
+    ports:
+      - "5000:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - examflow_net
+
+  web:
+    build:
+      context: ../ExamFlow.Web
+      dockerfile: Dockerfile
+    container_name: examflow_web
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+    networks:
+      - examflow_net
+
+volumes:
+  postgres_data:
+
+networks:
+  examflow_net:
+    driver: bridge

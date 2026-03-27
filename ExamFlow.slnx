@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="ExamFlow.Api/ExamFlow.Api.csproj" />
+  <Project Path="ExamFlow.Core/ExamFlow.Core.csproj" />
+</Solution>

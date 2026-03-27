@@ -1,0 +1,134 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "ExamFlow.Api | v1",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/api/examquestions": {
+      "get": {
+        "tags": [
+          "ExamQuestions"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ExamQuestions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExamQuestionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/examquestions/{id}": {
+      "get": {
+        "tags": [
+          "ExamQuestions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ExamQuestions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateExamQuestionDto": {
+        "required": [
+          "questionText",
+          "choice1",
+          "choice2",
+          "choice3",
+          "choice4"
+        ],
+        "type": "object",
+        "properties": {
+          "questionText": {
+            "type": "string"
+          },
+          "choice1": {
+            "type": "string"
+          },
+          "choice2": {
+            "type": "string"
+          },
+          "choice3": {
+            "type": "string"
+          },
+          "choice4": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ExamQuestions"
+    }
+  ]
+}

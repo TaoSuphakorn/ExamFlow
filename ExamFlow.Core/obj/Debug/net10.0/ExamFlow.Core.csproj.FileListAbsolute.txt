@@ -1,0 +1,11 @@
+D:\ExamFlow\ExamFlow.Core\bin\Debug\net10.0\ExamFlow.Core.deps.json
+D:\ExamFlow\ExamFlow.Core\bin\Debug\net10.0\ExamFlow.Core.dll
+D:\ExamFlow\ExamFlow.Core\bin\Debug\net10.0\ExamFlow.Core.pdb
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\ExamFlow.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\ExamFlow.Core.AssemblyInfoInputs.cache
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\ExamFlow.Core.AssemblyInfo.cs
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\ExamFlow.Core.csproj.CoreCompileInputs.cache
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\ExamFlow.Core.dll
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\refint\ExamFlow.Core.dll
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\ExamFlow.Core.pdb
+D:\ExamFlow\ExamFlow.Core\obj\Debug\net10.0\ref\ExamFlow.Core.dll

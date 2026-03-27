@@ -1,0 +1,142 @@
+<div class="min-h-screen bg-gray-100 py-8 px-4 font-sarabun">
+  <div class="max-w-2xl mx-auto space-y-4">
+
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+      <div class="bg-green-500 px-6 py-4">
+        <h1 class="text-white text-lg font-semibold">สรุปผลการทำข้อสอบ</h1>
+      </div>
+
+      <div class="p-8 text-center">
+        <div class="inline-flex flex-col items-center justify-center
+                    w-36 h-36 rounded-full border-8 border-gray-100 mb-4">
+          <span class="text-4xl font-bold" [class]="scoreColor">
+            {{ quizState.score }}/{{ quizState.total }}
+          </span>
+          <span class="text-gray-400 text-sm">คะแนน</span>
+        </div>
+
+        <div class="text-5xl font-bold mb-2" [class]="scoreColor">
+          {{ quizState.percentage }}%
+        </div>
+
+        <p class="text-gray-500 text-base mb-6">{{ scoreMessage }}</p>
+
+        <div class="grid grid-cols-3 gap-4 mb-6">
+          <div class="bg-green-50 rounded-xl p-3">
+            <div class="text-2xl font-bold text-green-500">{{ quizState.score }}</div>
+            <div class="text-xs text-gray-500 mt-1">ถูก</div>
+          </div>
+          <div class="bg-red-50 rounded-xl p-3">
+            <div class="text-2xl font-bold text-red-400">
+              {{ quizState.total - quizState.score }}
+            </div>
+            <div class="text-xs text-gray-500 mt-1">ผิด</div>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-3">
+            <div class="text-2xl font-bold text-gray-500">{{ quizState.total }}</div>
+            <div class="text-xs text-gray-500 mt-1">ทั้งหมด</div>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            (click)="goHome()"
+            class="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-500
+                   hover:border-gray-300 text-sm font-medium transition-all"
+          >
+            🏠 หน้าแรก
+          </button>
+          <button
+            (click)="tryAgain()"
+            class="flex-1 py-3 rounded-xl bg-green-500 hover:bg-green-600
+                   text-white text-sm font-semibold transition-all shadow-sm"
+          >
+            🔄 ทำใหม่
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-100">
+        <h2 class="font-semibold text-gray-700">รายละเอียดคำตอบ</h2>
+      </div>
+
+      <div class="divide-y divide-gray-50">
+        @for (answer of quizState.answers(); track answer.questionId) {
+          <div class="p-5">
+
+            <div class="flex items-start gap-3 mb-3">
+              <span
+                class="shrink-0 inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold"
+                [class.bg-green-100]="answer.isCorrect"
+                [class.text-green-600]="answer.isCorrect"
+                [class.bg-red-100]="!answer.isCorrect"
+                [class.text-red-500]="!answer.isCorrect"
+              >
+                {{ answer.isCorrect ? '✓' : '✗' }}
+              </span>
+              <p class="text-gray-800 text-sm font-medium">
+                {{ answer.questionNumber }}. {{ answer.questionText }}
+              </p>
+            </div>
+
+            <div class="space-y-1.5 pl-10">
+              @for (choice of answer.choices; track $index) {
+                <div
+                  class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm"
+                  [class.bg-green-50]="($index + 1) === answer.correctAnswer"
+                  [class.border]="($index + 1) === answer.correctAnswer || ($index + 1) === answer.selectedAnswer"
+                  [class.border-green-400]="($index + 1) === answer.correctAnswer"
+                  [class.bg-red-50]="($index + 1) === answer.selectedAnswer && !answer.isCorrect && ($index + 1) !== answer.correctAnswer"
+                  [class.border-red-300]="($index + 1) === answer.selectedAnswer && !answer.isCorrect && ($index + 1) !== answer.correctAnswer"
+                >
+                  @if (($index + 1) === answer.correctAnswer) {
+                    <span class="text-green-500 font-bold shrink-0">✓</span>
+                  } @else if (($index + 1) === answer.selectedAnswer && !answer.isCorrect) {
+                    <span class="text-red-400 font-bold shrink-0">✗</span>
+                  } @else {
+                    <span class="w-4 shrink-0"></span>
+                  }
+
+                  <span
+                    [class.text-green-700]="($index + 1) === answer.correctAnswer"
+                    [class.font-semibold]="($index + 1) === answer.correctAnswer"
+                    [class.text-red-500]="($index + 1) === answer.selectedAnswer && !answer.isCorrect && ($index + 1) !== answer.correctAnswer"
+                    [class.text-gray-500]="($index + 1) !== answer.correctAnswer && ($index + 1) !== answer.selectedAnswer"
+                  >
+                    {{ choice }}
+                  </span>
+
+                  <div class="ml-auto flex gap-1">
+                    @if (($index + 1) === answer.correctAnswer) {
+                      <span class="text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full">
+                        เฉลย
+                      </span>
+                    }
+                    @if (($index + 1) === answer.selectedAnswer) {
+                      <span class="text-xs px-2 py-0.5 rounded-full"
+                        [class.bg-green-200]="answer.isCorrect"
+                        [class.text-green-700]="answer.isCorrect"
+                        [class.bg-red-100]="!answer.isCorrect"
+                        [class.text-red-500]="!answer.isCorrect"
+                      >
+                        คำตอบคุณ
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if (answer.selectedAnswer === 0) {
+                <p class="text-xs text-gray-400 italic px-3">— ไม่ได้เลือกคำตอบ —</p>
+              }
+            </div>
+
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>
